@@ -40,4 +40,12 @@ public class ProjectService {
         }
         projectRepository.deleteById(id);
     }
+
+    public ProjectResponse update(Long id, UpdateProjectRequest request){
+        Project project = projectRepository.findById(id).orElseThrow(() -> new ProjectNotFoundException(id));
+        project.setName(request.name());
+        project.setDescription(request.description());
+        Project saved = projectRepository.save(project);
+        return toResponse(saved);
+    }
 }
