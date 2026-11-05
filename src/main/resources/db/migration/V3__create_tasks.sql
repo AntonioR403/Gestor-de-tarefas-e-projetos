@@ -1,0 +1,13 @@
+CREATE TABLE tasks(
+    id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    project_id BIGINT NOT NULL REFERENCES projects(id) ON DELETE CASCADE,
+    title VARCHAR(255) NOT NULL,
+    description TEXT,
+    status VARCHAR(20) NOT NULL DEFAULT 'TODO' CHECK(status IN('DONE', 'IN_PROGRESS', 'TODO', 'CANCELED')),
+    priority VARCHAR(20) NOT NULL DEFAULT 'MEDIUM' CHECK (priority IN('LOW', 'MEDIUM', 'HIGH')),
+    due_date DATE,
+    assignee_id BIGINT REFERENCES users(id) ON DELETE SET NULL,
+    created_by BIGINT NOT NULL REFERENCES users(id),
+    created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
