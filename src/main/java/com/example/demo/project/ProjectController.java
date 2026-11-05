@@ -25,4 +25,20 @@ public class ProjectController {
     public List<ProjectResponse> findAll(){
         return projectService.findAll();
     }
+
+    @GetMapping("/{id}")
+    public ProjectResponse findById(@PathVariable Long id){
+        return projectService.findById(id);
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable Long id){
+        projectService.delete(id);
+    }
+
+    @PutMapping("/{id}")
+    public ProjectResponse update(@PathVariable Long id, @Valid @RequestBody UpdateProjectRequest request){
+        return projectService.update(id, request);
+    }
 }
