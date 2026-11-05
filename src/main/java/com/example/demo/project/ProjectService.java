@@ -33,4 +33,11 @@ public class ProjectService {
     private ProjectResponse toResponse(Project project) {
         return new ProjectResponse(project.getId(), project.getName(), project.getDescription(), project.getCreatedAt());
     }
+
+    public void delete(Long id){
+        if(!projectRepository.existsById(id)){
+            throw new ProjectNotFoundException(id);
+        }
+        projectRepository.deleteById(id);
+    }
 }

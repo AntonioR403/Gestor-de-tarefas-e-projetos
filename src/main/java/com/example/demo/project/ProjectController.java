@@ -30,4 +30,10 @@ public class ProjectController {
     public ProjectResponse findById(@PathVariable Long id){
         return projectService.findById(id);
     }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable Long id){
+        projectService.delete(id);
+    }
 }
