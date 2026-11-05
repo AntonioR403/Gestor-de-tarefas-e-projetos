@@ -25,6 +25,11 @@ public class ProjectService {
                 .toList();
     }
 
+    public ProjectResponse findById(Long id){
+        Project project = projectRepository.findById(id)
+                .orElseThrow(() -> new ProjectNotFoundException(id));
+        return toResponse(project);
+    }
     private ProjectResponse toResponse(Project project) {
         return new ProjectResponse(project.getId(), project.getName(), project.getDescription(), project.getCreatedAt());
     }

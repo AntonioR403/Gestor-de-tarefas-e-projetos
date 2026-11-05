@@ -25,4 +25,9 @@ public class ProjectController {
     public List<ProjectResponse> findAll(){
         return projectService.findAll();
     }
+
+    @GetMapping("/{id}")
+    public ProjectResponse findById(@PathVariable Long id){
+        return projectService.findById(id);
+    }
 }
