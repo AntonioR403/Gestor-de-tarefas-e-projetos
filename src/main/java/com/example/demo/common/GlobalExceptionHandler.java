@@ -1,8 +1,8 @@
 package com.example.demo.common;
 
+import com.example.demo.auth.EmailAlreadyUsedException;
 import com.example.demo.project.ProjectNotFoundException;
 import com.example.demo.task.TaskNotFoundException;
-import com.example.demo.task.UpdateTaskResquest;
 import com.example.demo.user.UserNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
@@ -40,5 +40,10 @@ public class GlobalExceptionHandler {
                 .forEach(error -> errors.put(error.getField(), error.getDefaultMessage()));
         problem.setProperty("errors", errors);
         return problem;
+    }
+
+    @ExceptionHandler(EmailAlreadyUsedException.class)
+    public ProblemDetail handleEmailAlreadyUsed(EmailAlreadyUsedException ex){
+        return ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, ex.getMessage());
     }
 }
