@@ -6,8 +6,10 @@ import com.example.demo.project.ProjectRepository;
 import com.example.demo.user.User;
 import com.example.demo.user.UserNotFoundException;
 import com.example.demo.user.UserRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.util.List;
 
@@ -77,6 +79,13 @@ public class TaskService {
         }
 
         return toResponse(task);
+    }
+
+    @Transactional
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(Long projectId, Long taskId){
+        Task task = taskRepository.findByIdAndProjectId(taskId, projectId).orElseThrow(() -> new TaskNotFoundException(taskId));
+        taskRepository.delete(task);
     }
 
     private TaskResponse toResponse(Task task){
