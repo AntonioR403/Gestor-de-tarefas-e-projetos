@@ -6,8 +6,10 @@ import com.example.demo.project.ProjectRepository;
 import com.example.demo.user.User;
 import com.example.demo.user.UserNotFoundException;
 import com.example.demo.user.UserRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.util.List;
 
@@ -50,6 +52,40 @@ public class TaskService {
             throw new ProjectNotFoundException(projectId);
         }
         return taskRepository.findByProjectId(projectId).stream().map(this::toResponse).toList();
+    }
+
+    @Transactional(readOnly = true)
+    public TaskResponse findById(Long projectId, Long taskId){
+        Task task = taskRepository.findByIdAndProjectId(taskId, projectId).orElseThrow(() -> new TaskNotFoundException(taskId));
+        return toResponse(task);
+    }
+
+    @Transactional
+    public TaskResponse update(Long projectId, Long taskId, UpdateTaskResquest request){
+        Task task = taskRepository.findByIdAndProjectId(taskId, projectId).orElseThrow(() -> new TaskNotFoundException(taskId));
+
+        task.setTitle(request.title());
+        task.setDescription(request.description());
+        task.setStatus(request.status());
+        task.setPriority(request.priority());
+        task.setDueDate(request.dueDate());
+
+        if(request.assigneeId() == null){
+            task.setAssignee(null);
+        }else{
+            User assignee = userRepository.findById((request.assigneeId())).
+                    orElseThrow(() -> new UserNotFoundException(request.assigneeId()));
+            task.setAssignee(assignee);
+        }
+
+        return toResponse(task);
+    }
+
+    @Transactional
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(Long projectId, Long taskId){
+        Task task = taskRepository.findByIdAndProjectId(taskId, projectId).orElseThrow(() -> new TaskNotFoundException(taskId));
+        taskRepository.delete(task);
     }
 
     private TaskResponse toResponse(Task task){

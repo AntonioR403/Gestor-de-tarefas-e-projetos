@@ -1,6 +1,5 @@
 # Task and Project Manager
-This project has the objective of creating an application for managing a team or a project in an easier way, making the Team Leader or Project Manager have less
-work when assigning a task to a coworker.
+This project is a REST API for managing teams and projects, reducing the workload of team leaders and project managers when assigning tasks to team members.
 
 ## Technology
 - Java version 27
@@ -22,7 +21,34 @@ work when assigning a task to a coworker.
     - PowerShell(Windows): .\mvnw spring-boot:run
     - CMD(Windows): mvnw.cmd spring-boot:run
     - Linux or macOS: ./mvnw spring-boot:run
-  5. Open your browser in http://localhost:8080/api/ping (for you to see if the application is running)
+  5. Open http://localhost:8080/swagger-ui/index.html#/ in your browser (to check that the application is running)
+
+## Endpoints
+- TaskController:
+  - POST: /api/projects/{projectId}/tasks
+  - GET: /api/projects/{projectId}/tasks
+  - GET: /api/projects/{projectId}/tasks/{taskId}
+  - PUT: /api/projects/{projectId}/tasks/{taskId}
+  - DELETE: /api/projects/{projectId}/tasks/{taskId}
+- ProjectController:
+  - POST: /api/projects
+  - GET: /api/projects
+  - GET: /api/projects/{id}
+  - PUT: /api/projects/{id}
+  - DELETE: /api/projects/{id}
+- PingController
+  - GET: /api/ping
 
 ## Status
-In the starting point, just have the first migration, and the application working.
+- [x] Project and task CRUD
+- [x] Request validation with detailed error responses
+- [x] Database migrations with Flyway
+- [x] API documentation with Swagger
+- [ ] Authentication (JWT with refresh tokens)
+- [ ] Per-project roles and permissions (owner, admin, member)
+- [ ] Task filtering, search and pagination
+- [ ] Task comments
+- [ ] Audit log
+- [ ] Automated tests (Testcontainers)
+- [ ] CI with GitHub Actions
+- [ ] Dockerfile
