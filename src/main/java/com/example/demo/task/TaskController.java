@@ -26,4 +26,14 @@ public class TaskController {
     public List<TaskResponse> findByProject(@PathVariable Long projectId){
         return taskService.findByProject(projectId);
     }
+
+    @GetMapping("/{taskId}")
+    public TaskResponse findById(@PathVariable Long projectId, @PathVariable Long taskId){
+        return taskService.findById(projectId, taskId);
+    }
+
+    @PutMapping("/{taskId}")
+    public TaskResponse update(@PathVariable Long projectId, @PathVariable Long taskId, @Valid @RequestBody UpdateTaskResquest resquest){
+        return taskService.update(projectId, taskId, resquest);
+    }
 }

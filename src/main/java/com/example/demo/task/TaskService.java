@@ -52,6 +52,33 @@ public class TaskService {
         return taskRepository.findByProjectId(projectId).stream().map(this::toResponse).toList();
     }
 
+    @Transactional(readOnly = true)
+    public TaskResponse findById(Long projectId, Long taskId){
+        Task task = taskRepository.findByIdAndProjectId(taskId, projectId).orElseThrow(() -> new TaskNotFoundException(taskId));
+        return toResponse(task);
+    }
+
+    @Transactional
+    public TaskResponse update(Long projectId, Long taskId, UpdateTaskResquest request){
+        Task task = taskRepository.findByIdAndProjectId(taskId, projectId).orElseThrow(() -> new TaskNotFoundException(taskId));
+
+        task.setTitle(request.title());
+        task.setDescription(request.description());
+        task.setStatus(request.status());
+        task.setPriority(request.priority());
+        task.setDueDate(request.dueDate());
+
+        if(request.assigneeId() == null){
+            task.setAssignee(null);
+        }else{
+            User assignee = userRepository.findById((request.assigneeId())).
+                    orElseThrow(() -> new UserNotFoundException(request.assigneeId()));
+            task.setAssignee(assignee);
+        }
+
+        return toResponse(task);
+    }
+
     private TaskResponse toResponse(Task task){
         return new TaskResponse(
                 task.getId(),

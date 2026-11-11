@@ -1,6 +1,7 @@
 package com.example.demo.common;
 
 import com.example.demo.project.ProjectNotFoundException;
+import com.example.demo.task.TaskNotFoundException;
 import com.example.demo.user.UserNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
@@ -17,6 +18,11 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(UserNotFoundException.class)
     public ProblemDetail handleUserNotFound(UserNotFoundException ex){
+        return ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, ex.getMessage());
+    }
+
+    @ExceptionHandler(TaskNotFoundException.class)
+    public ProblemDetail handleTaskNotFound(TaskNotFoundException ex){
         return ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, ex.getMessage());
     }
 }
